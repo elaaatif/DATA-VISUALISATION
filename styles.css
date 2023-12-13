@@ -4,11 +4,84 @@ body {
     padding: 0;
     background-color: #1e1e1e; /* GitHub dark background color */
     color: #fff; /* Text color */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
-#filters, #chart-container {
+header {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width */
+    padding: 10px 20px; /* Adjusted padding */
+    position: fixed;
+    top: 0;
+    background-color: #2d2d2d; /* GitHub dark background for header */
+}
+
+#logo-container {
+    margin-right: 20px; /* Added margin to separate logo and title */
+    padding-left: 10px; /* Added padding to the left */
+}
+
+#logo-container img {
+    width: 100px; /* Adjusted size of the logo */
+    
+}
+
+#title-container {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    letter-spacing: 2px;
+    word-wrap: break-word;
+    animation: codeAnimation 2s infinite alternate-reverse;
+    position: relative;
+    margin: auto; /* Center the title horizontally */
+}
+
+@keyframes codeAnimation {
+    from {
+        color: #fff;
+        border-right: 2px solid #fff;
+    }
+
+    to {
+        color: #6f42c1; /* GitHub purple color */
+        border-right: 2px solid #6f42c1;
+    }
+}
+
+#title-container:hover::before {
+    content: "Made by Abdelatif Mekri & Halima Nfidsa";
+    position: absolute;
+    top: 80%; /* Adjusted top position */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.8); /* Adjusted background color */
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px; /* Adjusted font size */
+    z-index: 1;
+}
+
+#title-container:hover::after {
+    content: ""; /* To create the arrow-like tooltip */
+    position: absolute;
+    top: 80%; /* Adjusted top position */
+    left: 50%;
+    border: solid transparent;
+    border-width: 6px;
+    margin-left: -6px;
+    border-top-color: rgba(0, 0, 0, 0.8); /* Adjusted arrow color */
+}
+
+#filters,
+#chart-container {
     width: 80%;
-    margin: 20px auto;
+    margin: 60px auto 20px; /* Adjusted margin (top: 60px, bottom: 20px) */
     background-color: #2d2d2d; /* GitHub dark background for filters and chart container */
     padding: 20px;
     border-radius: 8px;
@@ -19,7 +92,8 @@ label {
     color: #8b949e; /* GitHub label color */
 }
 
-select, button {
+select,
+button {
     padding: 8px;
     margin-top: 8px;
     border: 1px solid #4d4d4d; /* GitHub input border color */
@@ -43,6 +117,3 @@ button:hover {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-/* Add additional styling for your chart here */
-
