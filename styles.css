@@ -60,23 +60,13 @@ header {
     left: 50%;
     transform: translateX(-50%);
     padding: 5px;
-    background-color: rgba(0, 0, 0, 0.8); /* Adjusted background color */
+    background-color: rgba(0, 0, 0, 0.214); /* Adjusted background color */
     color: #fff;
     border-radius: 4px;
     font-size: 14px; /* Adjusted font size */
     z-index: 1;
 }
 
-#title-container:hover::after {
-    content: ""; /* To create the arrow-like tooltip */
-    position: absolute;
-    top: 80%; /* Adjusted top position */
-    left: 50%;
-    border: solid transparent;
-    border-width: 6px;
-    margin-left: -6px;
-    border-top-color: rgba(0, 0, 0, 0.8); /* Adjusted arrow color */
-}
 
 #filters,
 #chart-container {
