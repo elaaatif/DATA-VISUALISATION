@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Popularity Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="filters">
+        <label for="year">Select Year:</label>
+        <select id="year"></select>
+
+        <label for="quarter">Select Quarter:</label>
+        <select id="quarter"></select>
+
+        <label for="language">Select Language:</label>
+        <select id="language"></select>
+        
+        <label for="visualizationType">Select Visualization Type:</label>
+        <select id="visualizationType">
+            <option value="line">Line Chart</option>
+            <option value="bar">Bar Chart</option>
+            <!-- Add more options for different types of visualizations -->
+        </select>
+        
+        <button onclick="updateChart()">Update Chart</button>
+    </div>
+
+    <div id="chart-container"></div>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
