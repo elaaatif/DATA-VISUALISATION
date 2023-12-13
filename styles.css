@@ -1,15 +1,48 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #1e1e1e; /* GitHub dark background color */
+    color: #fff; /* Text color */
 }
 
-#filters {
+#filters, #chart-container {
     width: 80%;
     margin: 20px auto;
+    background-color: #2d2d2d; /* GitHub dark background for filters and chart container */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a subtle box shadow */
+}
+
+label {
+    color: #8b949e; /* GitHub label color */
+}
+
+select, button {
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #4d4d4d; /* GitHub input border color */
+    border-radius: 4px;
+    background-color: #333; /* GitHub input background color */
+    color: #fff; /* GitHub input text color */
+}
+
+button {
+    background-color: #6f42c1; /* GitHub purple button color */
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #9147ff; /* GitHub purple button color on hover */
 }
 
 #chart-container {
-    width: 80%;
-    margin: 20px auto;
+    background-color: #2d2d2d;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Add additional styling for your chart here */
+
