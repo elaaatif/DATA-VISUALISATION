@@ -1,14 +1,20 @@
+//npm install jsdom
 //npm install csv-parser fs express ----- read csv files
-
 let combinedData; // Declare the variable to store combined data globally
 
 // Load data and create the initial chart
 const fs = require('fs');
 const csv = require('csv-parser');
+const width = 800; // Set your desired width
+const height = 400; // Set your desired height
 
 const issuesData = [];
 const prsData = [];
 const reposData = [];
+
+const { JSDOM } = require('jsdom');
+const dom = new JSDOM();
+global.document = dom.window.document;
 
 // Read issues.csv
 fs.createReadStream('DATA/issues.csv')
@@ -32,7 +38,8 @@ fs.createReadStream('DATA/issues.csv')
           })
           .on('end', () => {
             // Now you can use the data and implement the rest of your logic
-            const combinedData = combineData(issuesData, prsData);
+            combinedData = combineData(issuesData, prsData);
+            populateDropdowns(); // Populate dropdowns after data is loaded
             console.log(combinedData); // Example: Log combined data to the console
           });
       });
@@ -49,20 +56,18 @@ function combineData(issuesData, prsData) {
     });
 }
 
-
-function combineData(issuesData, prsData) {
-    return issuesData.map((issue, i) => {
-        return {
-            name: issue.name,
-            year: issue.year,
-            quarter: issue.quarter,
-            totalCount: +issue.count + +prsData[i].count,
-        };
-    });
-}
-
 function getUniqueValues(data, key) {
     return Array.from(new Set(data.map(d => d[key])));
+}
+
+function populateDropdowns() {
+    const years = getUniqueValues(combinedData, 'year');
+    const quarters = getUniqueValues(combinedData, 'quarter');
+    const languages = getUniqueValues(combinedData, 'name');
+
+    populateDropdown('year', years);
+    populateDropdown('quarter', quarters);
+    populateDropdown('language', languages);
 }
 
 function populateDropdown(id, values) {
@@ -104,25 +109,12 @@ function getFilteredData(year, quarter, language) {
     ));
 }
 //----------------------------------------------------------------
-
-// Function to combine issues and PRs data
-function combineData(issuesData, prsData) {
-    return issuesData.map((issue, i) => {
-        return {
-            name: issue.name,
-            year: issue.year,
-            quarter: issue.quarter,
-            totalCount: +issue.count + +prsData[i].count,
-        };
-    });
-}
-
 // Function to create a line chart
 function createLineChart(data) {
     const svg = d3.select("#chart-container")
         .append("svg")
-        .attr("width", "100%")
-        .attr("height", 400);
+        .attr("width", width)
+        .attr("height", height);
 
     const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
     const y = d3.scaleLinear().rangeRound([height, 0]);
@@ -151,8 +143,8 @@ function createLineChart(data) {
 function createBarChart(data) {
     const svg = d3.select("#chart-container")
         .append("svg")
-        .attr("width", "100%")
-        .attr("height", 400);
+        .attr("width", width)
+        .attr("height", height);
 
     const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
     const y = d3.scaleLinear().rangeRound([height, 0]);
@@ -177,10 +169,13 @@ function createBarChart(data) {
 function createPieChart(data) {
     const svg = d3.select("#chart-container")
         .append("svg")
-        .attr("width", "100%")
-        .attr("height", 400)
+        .attr("width", width)
+        .attr("height", height)
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2})`);
+
+    // Initialize color scale for the pie chart
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     // Create a pie chart layout
     const pie = d3.pie().value(d => d.totalCount);
@@ -201,4 +196,6 @@ function createPieChart(data) {
         .attr("fill", (d, i) => color(i));
 }
 
-//----------------------------------------------------------------
+
+// Remove the global document variable at the end of your script
+delete global.document;
