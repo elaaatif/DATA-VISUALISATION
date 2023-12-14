@@ -175,6 +175,14 @@ function createLineChart(data, showAllQuarters) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 2)
         .attr("d", line);
+        // Add chart title ---------------------------------------------- CAN BE REMOVED/NOT WORKING SO FAR -------------------------------------------------------------------
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top / 2)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text(`Line Chart of ${language} in ${year} Q${quarter}`);
 }
 
 // Function to create a bar chart
