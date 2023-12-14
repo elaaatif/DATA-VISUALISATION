@@ -38,7 +38,16 @@
             <option value="pie">Pie Chart</option>
             <!-- Add more options for different types of visualizations -->
         </select>
-
+        <!-------------------------------------------------------------------------- -->
+        <div id="show-all-years">
+            <input type="checkbox" id="showAllYears" onchange="updateChart()">
+            <label for="showAllYears">Show All Years</label>
+        </div>
+        <div id="=by-Quarter">
+            <label for="byQuarter">By Quarter:</label>
+            <input type="checkbox" id="byQuarter" onchange="updateChart()"/>   
+        </div>
+        <!-------------------------------------------------------------------------- -->
         <button onclick="updateChart()">Update Chart</button>
     </div>
 
