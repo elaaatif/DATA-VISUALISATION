@@ -21,6 +21,10 @@ function getUniqueValues(data, key) {
 // Function to populate a dropdown with options
 function populateDropdown(id, values) {
     const dropdown = document.getElementById(id);
+    
+    // Clear existing options
+    dropdown.innerHTML = "";
+
     values.forEach(value => {
         const option = document.createElement("option");
         option.text = value;
@@ -71,7 +75,7 @@ function createComparisonChart(language, visualizationType, showAllQuarters) {
 
     // Create new chart based on the selected visualization type
     if (visualizationType === "line") {
-        const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+        const margin = { top: 20, right: 30, bottom: 50, left: 40 };
         const width = 800 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
 
@@ -130,7 +134,7 @@ function createLineChart(data, showAllQuarters) {
         data = data.filter(d => d.year === document.getElementById("year").value);
     }
 
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -180,9 +184,9 @@ function createBarChart(data, showAllQuarters) {
         data = data.filter(d => d.year === document.getElementById("year").value);
     }
 
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
     const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const height = 420 - margin.top - margin.bottom;
 
     const svg = d3.select("#chart-container")
         .append("svg")
@@ -226,13 +230,14 @@ function createBarChart(data, showAllQuarters) {
 
 
 //-------------------------------------------------------------------------------------------------------------------------------
-// Function to create a pie chart
+const color = d3.scaleOrdinal(d3.schemeCategory10);
+// Update the createPieChart function
 function createPieChart(data) {
     const width = 400;
     const height = 400;
     const radius = Math.min(width, height) / 2;
 
-    const svg = d3.select("#pie-chart-container")
+    const svg = d3.select("#chart-container")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -255,7 +260,7 @@ function createPieChart(data) {
         .data(arcs)
         .enter().append("path")
         .attr("d", arc)
-        .attr("fill", (d, i) => color(i));
+        .attr("fill", (d, i) => color(i)) // Use the color scale here
 
     // Add labels to the pie chart
     svg.selectAll("text")
@@ -265,6 +270,26 @@ function createPieChart(data) {
         .attr("dy", "0.35em")
         .attr("text-anchor", "middle")
         .text(d => d.data.name);
+
+    // Add legend
+    const legend = svg.selectAll(".legend")
+        .data(data.map(d => d.name))
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", (d, i) => `translate(0,${i * 20})`);
+
+    legend.append("rect")
+        .attr("x", width - 18)
+        .attr("width", 18)
+        .attr("height", 18)
+        .attr("fill", (d, i) => color(i));
+
+    legend.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "end")
+        .text(d => d);
 }
 
 
