@@ -16,12 +16,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elaaatif/DATA-VISUALISATION.git"
+    "url": ""
   },
   "author": "kawther1010",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/elaaatif/DATA-VISUALISATION/issues"
-  },
-  "homepage": "https://github.com/elaaatif/DATA-VISUALISATION#readme"
+    "url": ""
+  }
 }
