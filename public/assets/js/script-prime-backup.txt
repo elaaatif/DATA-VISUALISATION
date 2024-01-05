@@ -28,7 +28,7 @@ function populateDropdown(id, values) {
     values.forEach(value => {
         const option = document.createElement("option");
         option.text = value;
-        dropdown.add(option);
+        dropdown.add(option) ;
     });
 }
 
@@ -51,14 +51,10 @@ function updateChart() {
         d3.select("#chart-container").selectAll("*").remove();
 
         // Create new chart based on the selected visualization type
-        if (visualizationType === "line") {
+        if (selectedVisualizationType === "line") {
             createLineChart(filteredData, showAllQuarters);
-        } else if (visualizationType === "bar") {
+        } else if (selectedVisualizationType === "bar") {
             createBarChart(filteredData, showAllQuarters);
-        } else if (visualizationType === "pie") {
-            createPieChart(filteredData, showAllQuarters);
-        } else if (visualizationType === "treemap") {
-            createTreemap(filteredData, showAllQuarters);
         }
         // Add more conditions for other visualization types if needed
     }
@@ -81,10 +77,6 @@ function createComparisonChart(language, visualizationType, showAllQuarters) {
         createLineChart(filteredData, showAllQuarters);
     } else if (visualizationType === "bar") {
         createBarChart(filteredData, showAllQuarters);
-    } else if (visualizationType === "pie") {
-        createPieChart(filteredData, showAllQuarters);
-    } else if (visualizationType === "treemap") {
-        createTreemap(filteredData, showAllQuarters);
     }
     // Add more conditions for other visualization types if needed
 }
@@ -196,49 +188,60 @@ function createBarChart(data, showAllQuarters) {
 }
 
 //-----------------------------------------------------------------------------------------------------
-// Function to create a pie chart with a fancy color scheme and labels as years or quarters
-function createPieChart(data, showAllQuarters) {
+// Function to create a pie chart
+function createPieChart() {
+    const showAllQuarters = document.getElementById("byQuarter").checked;
+    let filteredData;
+
+    if (!showAllQuarters) {
+        // Filter data for the selected year
+        const selectedYear = document.getElementById("year").value;
+        filteredData = combinedData.filter(d => d.year === selectedYear);
+    } else {
+        filteredData = combinedData;
+    }
+
+    const total = d3.sum(filteredData, d => d.totalCount);
+
     const width = 400;
     const height = 400;
     const radius = Math.min(width, height) / 2;
 
-    const svg = d3.select("#chart-container")
+    // Remove previous chart
+    d3.select("#pie-chart-container").selectAll("*").remove();
+
+    const svg = d3.select("#pie-chart-container")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2})`);
 
-    // Filter data based on showAllQuarters
-    const filteredData = showAllQuarters
-        ? getFilteredData("", "", data[0].name)  // Get data for all years
-        : data;
-
-    // Define a custom color scale
-    const customColorScale = d3.scaleOrdinal()
-        .range(["#FF6F61", "#6B4226", "#ED872D", "#FBB829", "#9C2D30", "#B96D40", "#FF9A8B", "#E99D5B", "#FFC200", "#FFD700"]);
-
     // Create a pie chart layout
     const pie = d3.pie().value(d => d.totalCount);
-
-    // Create an arc generator
-    const arc = d3.arc()
-        .innerRadius(0)
-        .outerRadius(radius);
 
     // Generate pie chart arcs
     const arcs = pie(filteredData);
 
-    // Append arcs to the chart with custom colors
+    // Add arcs to the chart
     svg.selectAll("path")
         .data(arcs)
         .enter().append("path")
-        .attr("d", arc)
-        .attr("fill", (d, i) => customColorScale(i))
-        .append("title") // Add a title element for tooltips
-        .text(d => showAllQuarters ? d.data.name : `${d.data.year} Q${d.data.quarter}`);
+        .attr("d", d3.arc()
+            .innerRadius(0)
+            .outerRadius(radius))
+        .attr("fill", (d, i) => color(i));
 
-    // Add legend with custom colors
+    // Add labels to the pie chart
+    svg.selectAll("text")
+        .data(arcs)
+        .enter().append("text")
+        .attr("transform", d => `translate(${d3.arc().centroid(d)})`)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "middle")
+        .text(d => `${d.data.name} (${((d.data.totalCount / total) * 100).toFixed(2)}%)`);
+
+    // Add legend
     const legend = svg.selectAll(".legend")
         .data(filteredData.map(d => d.name))
         .enter().append("g")
@@ -249,7 +252,7 @@ function createPieChart(data, showAllQuarters) {
         .attr("x", width - 18)
         .attr("width", 18)
         .attr("height", 18)
-        .attr("fill", (d, i) => customColorScale(i));
+        .attr("fill", (d, i) => color(i));
 
     legend.append("text")
         .attr("x", width - 24)
@@ -257,64 +260,6 @@ function createPieChart(data, showAllQuarters) {
         .attr("dy", ".35em")
         .style("text-anchor", "end")
         .text(d => d);
-}
-
-//-----------------------------------------------------------------------------------------------------
-// Function to create a treemap with languages across all years
-function createTreemap(data) {
-    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
-
-    const svg = d3.select("#chart-container")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    // Create a flat array of data
-    const flatData = data.flatMap(language => language.years.map(year => ({
-        language: language.language,
-        year: year.year,
-        value: year.value
-    })));
-
-    // Create hierarchy from data
-    const root = d3.hierarchy({ children: flatData }, d => d.children)
-        .sum(d => d.value)
-        .sort((a, b) => b.value - a.value);
-
-    // Create treemap layout
-    const treemap = d3.treemap()
-        .size([width, height])
-        .padding(1)
-        .round(true);
-
-    // Generate treemap nodes
-    const nodes = treemap(root);
-
-    // Create treemap tiles
-    const tiles = svg.selectAll(".tile")
-        .data(nodes.leaves())
-        .enter().append("g")
-        .attr("class", "tile")
-        .attr("transform", d => `translate(${d.x0},${d.y0})`);
-
-    tiles.append("rect")
-        .attr("width", d => d.x1 - d.x0)
-        .attr("height", d => d.y1 - d.y0)
-        .attr("fill", "steelblue")
-        .attr("stroke", "white")
-        .append("title") // Add a title element for tooltips
-        .text(d => `${d.data.language}: ${d.value}`); // Set tooltip text
-
-    // Add text labels
-    tiles.append("text")
-        .attr("x", 5)
-        .attr("y", 15)
-        .text(d => `${d.data.language} (${d.data.year})`)
-        .attr("fill", "white");
 }
 
 //-----------------------------------------------------------------------------------------------------
@@ -343,7 +288,7 @@ async function loadData() {
         const uniqueLanguages = getUniqueValues(languagesData, 'language');
 
         // Populate the year select element
-        populateDropdown('year', uniqueYears) ;
+        populateDropdown('year', uniqueYears);
 
         // Populate the quarter select element
         populateDropdown('quarter', uniqueQuarters);
