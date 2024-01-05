@@ -1,5 +1,6 @@
 // Load data and create the initial chart
 let combinedData;
+console.log('this is ur data',combinedData);
 
 // Function to combine issues and PRs data
 function combineData(issuesData, prsData) {
@@ -17,7 +18,7 @@ function combineData(issuesData, prsData) {
 function getUniqueValues(data, key) {
     return Array.from(new Set(data.map(d => d[key])));
 }
-
+console.log(getUniqueValues);
 // Function to populate a dropdown with options
 function populateDropdown(id, values) {
     const dropdown = document.getElementById(id);
@@ -175,14 +176,14 @@ function createLineChart(data, showAllQuarters) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 2)
         .attr("d", line);
-        // Add chart title ---------------------------------------------- CAN BE REMOVED/NOT WORKING SO FAR -------------------------------------------------------------------
-    svg.append("text")
-    .attr("x", width / 2)
-    .attr("y", 0 - margin.top / 2)
-    .attr("text-anchor", "middle")
-    .style("font-size", "16px")
-    .style("text-decoration", "underline")
-    .text(`Line Chart of ${language} in ${year} Q${quarter}`);
+        // Add chart title --------------------------------------------  -- CAN BE REMOVED/NOT WORKING SO FAR -------------------------------------------------------------------
+    //svg.append("text")
+    //.attr("x", width / 2)
+    //.attr("y", 0 - margin.top / 2)
+   // .attr("text-anchor", "middle")
+   // .style("font-size", "16px")
+    //.style("text-decoration", "underline")
+   // .text(`Line Chart of ${language} in ${year} Q${quarter}`);
 }
 
 // Function to create a bar chart
@@ -238,7 +239,7 @@ function createBarChart(data, showAllQuarters) {
 
 
 //-------------------------------------------------------------------------------------------------------------------------------
-const color = d3.scaleOrdinal(d3.schemeCategory10);
+//const color = d3.scaleOrdinal(d3.schemeCategory10);
 // Update the createPieChart function
 function createPieChart(data) {
     const width = 400;
@@ -312,30 +313,35 @@ function getFilteredData(year, quarter, language) {
 
 // Function to load data from CSV files and populate filter options
 async function loadData() {
-    // Example paths to CSV files, replace with your actual paths
-    const issuesData = await d3.csv('./DATA/issues.csv');
-    const prsData = await d3.csv('./DATA/prs.csv'); // Replace with the correct path
-    const languagesData = await d3.csv('./DATA/repos.csv');
+    try {
+        // Example paths to CSV files, replace with your actual paths
+        const issuesData = await d3.csv('./public/assets/DATA/issues.csv');
+        const prsData = await d3.csv('./public/assets/DATA/prs.csv');
+        const languagesData = await d3.csv('./public/assets/DATA/repos.csv');
 
-    combinedData = combineData(issuesData, prsData);
+        combinedData = combineData(issuesData, prsData);
 
-    // Get unique values for each category
-    const uniqueYears = getUniqueValues(issuesData, 'year');
-    const uniqueQuarters = getUniqueValues(issuesData, 'quarter'); // Update with the correct key when available
-    const uniqueLanguages = getUniqueValues(languagesData, 'language');
+        // Get unique values for each category
+        const uniqueYears = getUniqueValues(issuesData, 'year');
+        const uniqueQuarters = getUniqueValues(issuesData, 'quarter');
+        const uniqueLanguages = getUniqueValues(languagesData, 'language');
 
-    // Populate the year select element
-    populateDropdown('year', uniqueYears);
+        // Populate the year select element
+        populateDropdown('year', uniqueYears);
 
-    // Populate the quarter select element
-    populateDropdown('quarter', uniqueQuarters);
+        // Populate the quarter select element
+        populateDropdown('quarter', uniqueQuarters);
 
-    // Populate the language select element
-    populateDropdown('language', uniqueLanguages);
+        // Populate the language select element
+        populateDropdown('language', uniqueLanguages);
 
-    // Initial chart creation
-    updateChart();
+        // Initial chart creation
+        updateChart();
+    } catch (error) {
+        console.error('Error loading data:', error);
+    }
 }
+
 
 // Event listener for changes in filters
 document.getElementById("year").addEventListener("change", updateChart);

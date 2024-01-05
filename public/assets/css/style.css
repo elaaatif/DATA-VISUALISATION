@@ -2,8 +2,8 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e;
-    color: #fff;
+    background-color: #1e1e1e; /* GitHub dark background color */
+    color: #fff; /* Text color */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,20 +14,21 @@ body {
 header {
     display: flex;
     align-items: center;
-    width: 100%;
-    padding: 10px 20px;
+    width: 100%; /* Full width */
+    padding: 10px 20px; /* Adjusted padding */
     position: fixed;
     top: 0;
-    background-color: #2d2d2d;
+    background-color: #2d2d2d; /* GitHub dark background for header */
 }
 
 #logo-container {
-    margin-right: 20px;
-    padding-left: 10px;
+    margin-right: 20px; /* Added margin to separate logo and title */
+    padding-left: 10px; /* Added padding to the left */
 }
 
 #logo-container img {
-    width: 100px;
+    width: 100px; /* Adjusted size of the logo */
+    
 }
 
 #title-container {
@@ -37,7 +38,7 @@ header {
     word-wrap: break-word;
     animation: codeAnimation 2s infinite alternate-reverse;
     position: relative;
-    margin: auto;
+    margin: auto; /* Center the title horizontally */
 }
 
 @keyframes codeAnimation {
@@ -47,7 +48,7 @@ header {
     }
 
     to {
-        color: #6f42c1;
+        color: #6f42c1; /* GitHub purple color */
         border-right: 2px solid #6f42c1;
     }
 }
@@ -55,14 +56,14 @@ header {
 #title-container:hover::before {
     content: "Made by Abdelatif Mekri & Halima Nfidsa";
     position: absolute;
-    top: 80%;
+    top: 80%; /* Adjusted top position */
     left: 50%;
     transform: translateX(-50%);
     padding: 5px;
-    background-color: rgba(0, 0, 0, 0.214);
+    background-color: rgba(0, 0, 0, 0.214); /* Adjusted background color */
     color: #fff;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 14px; /* Adjusted font size */
     z-index: 1;
 }
 
@@ -70,36 +71,36 @@ header {
 #filters,
 #chart-container {
     width: 80%;
-    margin: 60px auto 20px;
-    background-color: #2d2d2d;
+    margin: 60px auto 20px; /* Adjusted margin (top: 60px, bottom: 20px) */
+    background-color: #2d2d2d; /* GitHub dark background for filters and chart container */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding a subtle box shadow */
 }
 
 label {
-    color: #8b949e;
+    color: #8b949e; /* GitHub label color */
 }
 
-/*
 select,
 button {
     padding: 8px;
     margin-top: 8px;
-    border: 1px solid #4d4d4d;
+    border: 1px solid #4d4d4d; /* GitHub input border color */
     border-radius: 4px;
-    background-color: #333;
-    color: #fff;
+    background-color: #333; /* GitHub input background color */
+    color: #fff; /* GitHub input text color */
 }
 
 button {
-    background-color: #6f42c1;
+    background-color: #6f42c1; /* GitHub purple button color */
     cursor: pointer;
 }
+
 button:hover {
-    background-color: #9147ff;
+    background-color: #9147ff; /* GitHub purple button color on hover */
 }
-*/
+
 #chart-container {
     background-color: #2d2d2d;
     padding: 20px;
