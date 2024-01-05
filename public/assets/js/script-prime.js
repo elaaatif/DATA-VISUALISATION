@@ -343,7 +343,7 @@ async function loadData() {
         const uniqueLanguages = getUniqueValues(languagesData, 'language');
 
         // Populate the year select element
-        populateDropdown('year', uniqueYears);
+        populateDropdown('year', uniqueYears) ;
 
         // Populate the quarter select element
         populateDropdown('quarter', uniqueQuarters);

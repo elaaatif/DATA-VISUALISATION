@@ -28,7 +28,7 @@ function populateDropdown(id, values) {
     values.forEach(value => {
         const option = document.createElement("option");
         option.text = value;
-        dropdown.add(option);
+        dropdown.add(option) ;
     });
 }
 
