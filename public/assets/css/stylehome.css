@@ -1,0 +1,66 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding-top: 20rem;
+    background-color: #1e1e1e; /* GitHub dark background color */
+    color: #fff; /* Text color */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width */
+    padding: 20px; /* Increased padding for a more modern look */
+    position: fixed;
+    top: 0;
+    background-color: #2d2d2d; /* GitHub dark background for header */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Subtle box shadow for depth */
+}
+
+h2 {
+    padding-top: 10rem;
+    color: #ffffff; /* A contrasting color for section headers */
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px; /* Space between header and content */
+}
+
+.col-md-3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.product__img {
+    max-width: 100%; /* Ensure images don't exceed their container */
+    border-radius: 8px; /* Add a slight border radius for a softer look */
+}
+
+.btn {
+    background-color: #90929318; /* GitHub blue color for buttons */
+    color: #fff; /* Text color on buttons */
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 0px; /* Rounded corners for buttons */
+}
+
+.btn:hover {
+    background-color: #5867733b; /* Slightly darker blue on hover */
+}
+b{ 
+    color: #a7a7a7; 
+}
+p{ 
+    color: #737070; 
+}
