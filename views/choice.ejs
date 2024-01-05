@@ -48,15 +48,16 @@
     </div>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="assets/js/script2.js"></script>
+   <script src="assets/js/script2.js"></script>
+   <script src="assets/js/script.js"></script>
 
     <script>
         // Function to load data from CSV files and populate filter options
         async function loadData() {
             // Example paths to CSV files, replace with your actual paths
-            const yearsData = await d3.csv('./public/assets/DATA/issues.csv');
-            const quartersData = await d3.csv('./public/assets/DATA/issues.csv'); // Replace with 'DATA/quarters.csv' when available
-            const languagesData = await d3.csv('./public/assets/DATA/repos.csv');
+            const yearsData = await d3.csv('assets/DATA/issues.csv');
+            const quartersData = await d3.csv('assets/DATA/issues.csv'); // Replace with 'DATA/quarters.csv' when available
+            const languagesData = await d3.csv('assets/DATA/repos.csv');
 
             // Get unique values for each category
             const uniqueYears = getUniqueValues(yearsData, 'year');
