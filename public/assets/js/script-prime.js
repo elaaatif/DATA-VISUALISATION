@@ -169,6 +169,11 @@ function createBarChart(data, showAllQuarters) {
     x.domain(data.map(d => `${d.year} Q${d.quarter}`));
     y.domain([0, d3.max(data, d => d.totalCount)]);
 
+    // Define a color scale for each year
+    const colorScale = d3.scaleOrdinal()
+        .domain(data.map(d => d.year))
+        .range(["#FFB6C1", "#FFD700", "#87CEEB", "#98FB98", "#FFA07A", "#FFDAB9", "#ADD8E6", "#FF6347", "#FFA500", "#20B2AA"]);
+
     // Add the x-axis with rotated labels
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
@@ -183,7 +188,7 @@ function createBarChart(data, showAllQuarters) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Append bars to the chart
+    // Append bars to the chart with consistent colors for each year
     svg.selectAll(".bar")
         .data(data)
         .enter().append("rect")
@@ -192,8 +197,9 @@ function createBarChart(data, showAllQuarters) {
         .attr("y", d => y(d.totalCount))
         .attr("width", x.bandwidth())
         .attr("height", d => height - y(d.totalCount))
-        .attr("fill", "steelblue");
+        .attr("fill", d => colorScale(d.year));
 }
+
 
 //-----------------------------------------------------------------------------------------------------
 function createPieChart(data, showAllQuarters) {
