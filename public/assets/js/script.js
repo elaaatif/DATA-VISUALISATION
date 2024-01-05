@@ -47,9 +47,9 @@ function updateChart() {
 async function loadData() {
     try {
         // Example paths to CSV files, replace with your actual paths
-        const issuesData = await d3.csv('./public/assets/DATA/issues.csv');
-        const prsData = await d3.csv('./public/assets/DATA/prs.csv');
-        const languagesData = await d3.csv('./public/assets/DATA/repos.csv');
+        const issuesData = await d3.csv('assets/DATA/issues.csv');
+        const prsData = await d3.csv('assets/DATA/prs.csv');
+        const languagesData = await d3.csv('assets/DATA/repos.csv');
 
         combinedData = combineData(issuesData, prsData);
 
