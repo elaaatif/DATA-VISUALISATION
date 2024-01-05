@@ -196,10 +196,9 @@ function createBarChart(data, showAllQuarters) {
 }
 
 //-----------------------------------------------------------------------------------------------------
-// Function to create a pie chart with a fancy color scheme and labels as years or quarters
 function createPieChart(data, showAllQuarters) {
-    const width = 400;
-    const height = 400;
+    const width = 700;
+    const height = 600;
     const radius = Math.min(width, height) / 2;
 
     const svg = d3.select("#chart-container")
@@ -216,7 +215,7 @@ function createPieChart(data, showAllQuarters) {
 
     // Define a custom color scale
     const customColorScale = d3.scaleOrdinal()
-        .range(["#FF6F61", "#6B4226", "#ED872D", "#FBB829", "#9C2D30", "#B96D40", "#FF9A8B", "#E99D5B", "#FFC200", "#FFD700"]);
+        .range(["#FFB6C1", "#FFD700", "#87CEEB", "#98FB98", "#FFA07A", "#FFDAB9", "#ADD8E6", "#FF6347", "#FFA500", "#20B2AA"]);
 
     // Create a pie chart layout
     const pie = d3.pie().value(d => d.totalCount);
@@ -238,33 +237,31 @@ function createPieChart(data, showAllQuarters) {
         .append("title") // Add a title element for tooltips
         .text(d => showAllQuarters ? d.data.name : `${d.data.year} Q${d.data.quarter}`);
 
-    // Add legend with custom colors
-    const legend = svg.selectAll(".legend")
-        .data(filteredData.map(d => d.name))
-        .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", (d, i) => `translate(0,${i * 20})`);
-
-    legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .attr("fill", (d, i) => customColorScale(i));
-
-    legend.append("text")
-        .attr("x", width - 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "end")
-        .text(d => d);
+    // Add text labels with year and quarter information
+    svg.selectAll("text.label")
+        .data(arcs)
+        .enter().append("text")
+        .attr("class", "label")
+        .attr("transform", d => {
+            const centroid = arc.centroid(d);
+            const midAngle = (d.startAngle + d.endAngle) / 2;
+            const x = Math.cos(midAngle) * (radius + 5); // Adjust the distance from the center
+            const y = Math.sin(midAngle) * (radius + 5); // Adjust the distance from the center
+            return `translate(${centroid[0] + x},${centroid[1] + y})`;
+        })
+        .attr("dy", ".3em")
+        .attr("text-anchor", d => (d.startAngle + d.endAngle) / 2 > Math.PI ? "end" : "start")
+        .text(d => showAllQuarters ? ` (${d.data.year}) Q${d.data.quarter}` : `${d.data.year} Q${d.data.quarter} `);
+   
 }
 
 //-----------------------------------------------------------------------------------------------------
 // Function to create a treemap with languages across all years
+// Function to create a treemap
 function createTreemap(data) {
-    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
+    const width = 445 - margin.left - margin.right;
+    const height = 445 - margin.top - margin.bottom;
 
     const svg = d3.select("#chart-container")
         .append("svg")
@@ -273,47 +270,43 @@ function createTreemap(data) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Create a flat array of data
-    const flatData = data.flatMap(language => language.years.map(year => ({
-        language: language.language,
-        year: year.year,
-        value: year.value
-    })));
+    // Stratify the data: reformatting for d3.js
+    const root = d3.stratify()
+        .id(function (d) { return d.name; })
+        .parentId(function (d) { return d.parent; })
+        (data);
 
-    // Create hierarchy from data
-    const root = d3.hierarchy({ children: flatData }, d => d.children)
-        .sum(d => d.value)
-        .sort((a, b) => b.value - a.value);
+    root.sum(function (d) { return +d.value; });
 
-    // Create treemap layout
-    const treemap = d3.treemap()
+    // Use d3.treemap to compute the position of each element of the hierarchy
+    d3.treemap()
         .size([width, height])
-        .padding(1)
-        .round(true);
+        .padding(4)
+        (root);
 
-    // Generate treemap nodes
-    const nodes = treemap(root);
+    console.log(root.leaves());
 
-    // Create treemap tiles
-    const tiles = svg.selectAll(".tile")
-        .data(nodes.leaves())
-        .enter().append("g")
-        .attr("class", "tile")
-        .attr("transform", d => `translate(${d.x0},${d.y0})`);
-
-    tiles.append("rect")
-        .attr("width", d => d.x1 - d.x0)
-        .attr("height", d => d.y1 - d.y0)
-        .attr("fill", "steelblue")
-        .attr("stroke", "white")
-        .append("title") // Add a title element for tooltips
-        .text(d => `${d.data.language}: ${d.value}`); // Set tooltip text
+    // Add rectangles
+    svg.selectAll("rect")
+        .data(root.leaves())
+        .enter()
+        .append("rect")
+        .attr('x', function (d) { return d.x0; })
+        .attr('y', function (d) { return d.y0; })
+        .attr('width', function (d) { return d.x1 - d.x0; })
+        .attr('height', function (d) { return d.y1 - d.y0; })
+        .style("stroke", "black")
+        .style("fill", "#69b3a2");
 
     // Add text labels
-    tiles.append("text")
-        .attr("x", 5)
-        .attr("y", 15)
-        .text(d => `${d.data.language} (${d.data.year})`)
+    svg.selectAll("text")
+        .data(root.leaves())
+        .enter()
+        .append("text")
+        .attr("x", function (d) { return d.x0 + 10; })
+        .attr("y", function (d) { return d.y0 + 20; })
+        .text(function (d) { return d.data.name; })
+        .attr("font-size", "15px")
         .attr("fill", "white");
 }
 
