@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Popularity Visualization</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/stylehome.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<body id="filters">
+    <%- include('./includes/header') -%>
+    <div>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+        <div id="network-graph"></div>
+
+        <div class="cat">
+        <h2 class="text-center">CHOOSE YOUR FIELD</h2> <img src="\assets\img\mona-loading-dark-7701a7b97370.gif" alt="This is a cat"width="30" height="30">
+      </div>  
+      <br><br><br><br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\web-dev.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Web Development</a></button>
+                    </form>
+                </div>
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\mobile.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Mobile App Development</a></button>
+                    </form>
+                </div>
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\system.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Systems Programming</a></button>
+                    </form>
+                </div>
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\script-auto.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Scripting and Automation</a></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\data.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Data Science and Analysis</a></button>
+                    </form>
+                </div>
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\general.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">General-purpose Programming</a></button>
+                    </form>
+                </div>
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\config.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Markup and Configuration</a></button>
+                    </form>
+                </div>
+                <div class="col-md-3 text-center mb-5">
+                    <form action="/homepage" method="post">
+                        <img class="product__img" src="\assets\img\Miscellaneous.png" alt="This is a category picture">
+                        <br>
+                        <button class="btn"><a class="btn btn-outline-light" href="/choice">Miscellaneous and Specialized</a></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <br><br><br><br><br><br><br><br>
+    <%- include('./includes/footer') -%>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+<!-- SCRIPT TO ADD TREE VISUALISATION FOR MAIN PAGE -->
+     <script>
+        // Sample data representing categories and programming languages
+        const data = [
+            { category: "Miscellaneous and Specialized", languages: ["Python", "Ruby", "Swift", "Rust", "Go"] },
+            { category: "Markup and Configuration", languages: ["HTML", "CSS", "XML", "YAML", "JSON"] },
+            { category: "General-purpose Programming", languages: ["Java", "C#", "C++", "JavaScript", "TypeScript"] },
+            { category: "Data Science and Analysis", languages: ["Python", "R", "SQL", "Julia", "Scala"] },
+            { category: "Scripting and Automation", languages: ["Bash", "PowerShell", "Python", "Perl", "Ruby"] },
+            { category: "Systems Programming", languages: ["C", "C++", "Rust", "Go", "D"] },
+            { category: "Mobile App Development", languages: ["Swift", "Java (Android)", "Kotlin", "Objective-C", "React Native"] },
+            { category: "Web Development", languages: ["JavaScript", "HTML", "CSS", "Python (Django)", "Ruby (Ruby on Rails)"] },
+        ];
+
+        // Define colors for each category
+        const categoryColors = {
+            "Miscellaneous and Specialized": "#FFB6C1",
+            "Markup and Configuration": "#33a02c",
+            "General-purpose Programming": "#e31a1c",
+            "Data Science and Analysis": "#ff7f00",
+            "Scripting and Automation": "#87CEEB",
+            "Systems Programming": "#b15928",
+            "Mobile App Development": "#a6cee3",
+            "Web Development": "#fb9a99",
+        };
+
+        // Set up the SVG container for the graph
+        const svg = d3.select("#network-graph")
+            .append("svg")
+            .attr("width", 1200)
+            .attr("height", 600);
+
+        // Create links between categories and languages
+        const links = [];
+        data.forEach((category, index) => {
+            category.languages.forEach(language => {
+                links.push({ source: category.category, target: language });
+            });
+        });
+
+        // Create nodes for categories and languages
+        const nodes = data.map(category => ({ id: category.category, type: "category" }))
+            .concat(data.flatMap(category => category.languages.map(language => ({ id: language, type: "language" }))));  // Combine nodes and languages
+
+        // Call the ForceGraph function
+        function ForceGraph({ nodes, links }, { nodeId, nodeTitle, nodeFill, linkStroke, linkStrokeOpacity, linkStrokeWidth, width, height }) {
+            const simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(25))
+                .force("charge", d3.forceManyBody().strength(-100))
+                .force("center", d3.forceCenter(width / 2, height / 2));
+
+            // Create links
+            const link = svg.selectAll(".link")
+                .data(links)
+                .enter().append("line")
+                .attr("class", "link")
+                .attr("stroke", linkStroke)
+                .attr("stroke-opacity", linkStrokeOpacity)
+                .attr("stroke-width", linkStrokeWidth);
+
+            // Add labels to all nodes (categories and languages)
+            const allNodes = svg.selectAll(".node")
+                .data(nodes)
+                .enter().append("g")
+                .attr("class", d => "node " + d.type)
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            // Add circles to all nodes
+            allNodes.append("circle")
+                .attr("r", 10)
+                .style("fill", d => nodeFill(d));
+
+            // Add labels to all nodes
+            allNodes.append("text")
+                .attr("class", "label")
+                .text(d => d.id)
+                .attr("x", 15)
+                .attr("y", -15)
+                .attr("dy", "0.35em")
+                .style("fill", "white")  // Set text color to white
+                .style("font-family", "Arial");  // Set font family
+
+            // Add labels to category nodes
+            allNodes.filter(d => d.type === "category")
+                .select("text")
+                .attr("class", "category-label")
+                .attr("x", 15)
+                .attr("y", -15)
+                .attr("dy", "0.35em")
+                .style("fill", "white")  // Set text color to white
+                .style("font-family", "Arial");  // Set font family
+
+           // Update simulation on each tick
+simulation.on("tick", () => {
+    link
+        .attr("x1", d => Math.max(0, Math.min(width, d.source.x)))
+        .attr("y1", d => Math.max(0, Math.min(height, d.source.y)))
+        .attr("x2", d => Math.max(0, Math.min(width, d.target.x)))
+        .attr("y2", d => Math.max(0, Math.min(height, d.target.y)));
+
+    allNodes
+        .attr("transform", d => `translate(${Math.max(0, Math.min(width, d.x))},${Math.max(0, Math.min(height, d.y))})`);
+});
+
+
+            // Drag functions
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+
+        // Call the ForceGraph function
+        ForceGraph({
+            nodes,
+            links
+        }, {
+            nodeId: d => d.id,
+            nodeTitle: d => d.id,
+            nodeFill: d => (d.type === "category") ? categoryColors[d.id] : "steelblue",
+            linkStroke: "#999",
+            linkStrokeOpacity: 0.6,
+            linkStrokeWidth: 1.5,
+            width: 800,
+            height: 600
+        });
+    </script>
+</body>
+
+</html>
