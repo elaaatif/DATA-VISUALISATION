@@ -14,7 +14,7 @@
         <br><br><br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br><br><br>
     </div>
-
+    <h2>Selected Category: <%= category %></h2>
     <div id="filters">
         <label for="year">Select Year:</label>
         <select id="year"></select>
@@ -57,7 +57,7 @@
     </div>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
-   <script src="assets/js/script-prime.js"></script>
+    <script src="assets/js/script-prime.js"></script>
 
     <script>
         async function loadData() {
@@ -67,11 +67,50 @@
 
             const uniqueYears = getUniqueValues(yearsData, 'year');
             const uniqueQuarters = getUniqueValues(quartersData, 'quarter');
-            const uniqueLanguages = getUniqueValues(languagesData, 'language');
+            //const uniqueLanguages = getUniqueValues(languagesData, 'language');
+            let uniqueLanguages;
+            const selectedCategory = '<%= category %>';
+
+
+            switch (selectedCategory) {
+                case 'Web Development':
+                    uniqueLanguages = ['JavaScript', 'HTML', 'CSS'];
+                    break;
+                case 'Mobile App Development':
+                    uniqueLanguages = ['Java', 'Swift', 'Kotlin'];
+                    break;
+                case 'Systems Programming':
+                    uniqueLanguages = ['Java', 'Swift', 'Kotlin'];
+                    break;
+                case 'Scripting and Automation':
+                    uniqueLanguages = ['Java', 'Swift', 'Kotlin'];
+                    break;
+                
+                
+                case 'Data Science and Analysis':
+                    uniqueLanguages = ['JavaScript', 'HTML', 'CSS'];
+                    break;
+                case 'General Purpose Programming':
+                    uniqueLanguages = ['Java', 'Swift', 'Kotlin'];
+                    break;
+                case 'Markup And Configuration':
+                    uniqueLanguages = ['Java', 'Swift', 'Kotlin'];
+                    break;
+                case 'Miscellaneous and Specialized':
+                    uniqueLanguages = ['Java', 'Swift', 'Kotlin'];
+                    break;
+                
+                default:
+                    uniqueLanguages = ['Default Language'];
+            }
 
             populateDropdown('year', uniqueYears);
             populateDropdown('quarter', uniqueQuarters);
             populateDropdown('language', uniqueLanguages);
+
+
+            const allLanguages = getUniqueValues(languagesData, 'language');
+            console.log(allLanguages)
         }
         window.onload = loadData;
     </script>
