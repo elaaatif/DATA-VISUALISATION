@@ -64,3 +64,8 @@ b{
 p{ 
     color: #737070; 
 }
+.cat {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
