@@ -348,7 +348,7 @@ async function loadData() {
         populateDropdown('quarter', uniqueQuarters);
 
         // Populate the language select element
-        populateDropdown('language', uniqueLanguages);
+       populateDropdown('language', uniqueLanguages);
 
         // Initial chart creation
         updateChart();
