@@ -117,17 +117,17 @@
         { category: "Data Science and Analysis", languages: ["Python", "R", "SQL", "Julia", "Scala"] },
         { category: "Scripting and Automation", languages: ["Bash", "PowerShell", "Python", "Perl", "Ruby"] },
         { category: "Systems Programming", languages: ["C", "C++", "Rust", "Go", "D"] },
-        { category: "Mobile App Development", languages: ["Swift", "Java (Android)", "Kotlin", "Objective-C", "React Native"] },
-        { category: "Web Development", languages: ["JavaScript", "HTML", "CSS", "Python (Django)", "Ruby (Ruby on Rails)"] },
+        { category: "Mobile App Development", languages: ["Swift", "Java", "Kotlin", "Objective-C", "React Native"] },
+        { category: "Web Development", languages: ["JavaScript", "HTML", "CSS", "Django", "Ruby"] },
     ];
 
     // Define colors for each category
     const categoryColors = {
-        "Miscellaneous and Specialized": "#FFB6C1",
+        "Miscellaneous and Specialized": "#fff299",
         "Markup and Configuration": "#33a02c",
         "General-purpose Programming": "#e31a1c",
         "Data Science and Analysis": "#ff7f00",
-        "Scripting and Automation": "#87CEEB",
+        "Scripting and Automation": "#390e67",
         "Systems Programming": "#b15928",
         "Mobile App Development": "#a6cee3",
         "Web Development": "#fb9a99",
@@ -154,8 +154,8 @@
     // Call the ForceGraph function
     function ForceGraph({ nodes, links }, { nodeId, nodeTitle, nodeFill, linkStroke, linkStrokeOpacity, linkStrokeWidth, width, height }) {
         const simulation = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id(d => d.id).distance(25))
-            .force("charge", d3.forceManyBody().strength(-100))
+            .force("link", d3.forceLink(links).id(d => d.id).distance(45))
+            .force("charge", d3.forceManyBody().strength(-40))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
         // Create links
@@ -179,7 +179,7 @@
 
         // Add circles to all nodes
         allNodes.append("circle")
-            .attr("r", 10)
+            .attr("r", 12.5)
             .style("fill", d => nodeFill(d));
 
         // Add labels to all nodes
