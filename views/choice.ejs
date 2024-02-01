@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Popularity Visualization</title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <%- include('./includes/header') -%>
 </head>
 
 <body>
-    
+    <%- include('./includes/header') -%>
+
+    <div>
+        <br><br><br><br><br><br><br>
+    </div>
     
     <h2>Selected Category : <%= category %></h2>
     <div id="cdp">
@@ -34,9 +37,7 @@
             <option value="bar">Bar Chart</option>
             <option value="pie">Pie Chart</option>
             <option value="labellinglines">Directly labelling lines </option>
-            <!-- Add more options for different types of visualizations -->
         </select>
-        <!-------------------------------------------------------------------------- -->
         <div id="show-all-years">
             <input type="checkbox" id="showAllYears" onchange="updateChart()">
             <label for="showAllYears">Show All Years</label>
@@ -45,7 +46,6 @@
             <label for="byQuarter">By Quarter:</label>
             <input type="checkbox" id="byQuarter" onchange="updateChart()"/>   
         </div>
-        <!-------------------------------------------------------------------------- -->
     </div>
 
     <div id="chart-container">
@@ -73,26 +73,32 @@
             //const uniqueLanguages = getUniqueValues(languagesData, 'language');
             let uniqueLanguages;
             const selectedCategory = '<%= category %>';
+            const descriptionParagraph = document.getElementById('category-description');
 
             switch (selectedCategory) {
                 case 'Web Development':
                     uniqueLanguages = ['JavaScript', 'HTML', 'CSS', 'Protocol Buffer', 'Groovy', 'TypeScript', 'Blade', 'Twig', 'Pug', 'Kotlin', 'Swift', 'Vue', 'Svelte', 
                     'Ruby', 'CoffeeScript', 'Jupyter Notebook', 'ASP', 'PHP', 'Hack'];
+                    descriptionParagraph.textContent = 'Web development is a dynamic and rapidly evolving field that encompasses the creation and maintenance of websites and web applications. It involves a diverse set of skills, including programming languages like HTML, CSS, and JavaScript, as well as familiarity with frameworks, libraries, and content management systems. Web developers play a crucial role in shaping the online experience, focusing on both the functionality and user interface of websites. The field is divided into front-end development, dealing with the client-side interface, and back-end development, handling server-side logic and databases. With the advent of responsive design and mobile technology, web developers need to ensure websites are accessible across various devices. Continuous learning is essential in this field, given the constant evolution of technologies and industry trends. The demand for skilled web developers remains high as businesses and individuals seek an effective and engaging online presence.';
                     break;
                 case 'Mobile App Development':
                     uniqueLanguages = ['Java', 'Swift', 'Kotlin', 'Python', 'Apex', 'Groovy', 'Protocol Buffer','ActionScript','Dart','C#','Xamarin','Objective-C++',
                     'Objective-C',];
+                    descriptionParagraph.textContent ='Mobile app development is a dynamic and rapidly evolving field focused on creating applications for handheld devices like smartphones and tablets. It encompasses a wide range of technologies, platforms, and programming languages, such as iOS (Swift), Android (Java/Kotlin), and cross-platform frameworks like React Native and Flutter. Developers design apps for diverse purposes, from gaming and social media to productivity and health. The industry thrives on innovation, with constant updates and new features driven by user demands and emerging technologies. Mobile app developers face challenges related to compatibility, security, and user experience, demanding a blend of technical expertise and creativity. As the demand for mobile apps continues to soar, the field offers ample opportunities for developers to contribute to the digital landscape and stay at the forefront of technological advancements.';
                     break;
                 case 'Systems Programming':
                     uniqueLanguages = ['Java', 'Swift', 'Rust','Cuda', 'LLVM','Verilog', 'Groff', 'AppleScript', 'GDScript','C','D','nesC','GCC Machine Description',
                     'C++','Assembly','UnrealScript','DCPU-16 ASM'];
+                    descriptionParagraph.textContent = `Systems programming is a specialized area of software development focused on creating and maintaining the fundamental software that enables computer hardware to function. It involves crafting low-level programs that interact with the hardware, managing system resources, and optimizing performance. Systems programmers work with operating systems, device drivers, and firmware, ensuring efficient communication between software and hardware components. Proficiency in languages like C and assembly is essential, as systems programming demands a deep understanding of computer architecture. This field is critical for developing robust, reliable, and high-performance software infrastructure. Systems programmers play a vital role in designing the backbone of computing systems, contributing to the stability and functionality of everything from embedded systems to large-scale server environments.`;
                     break;
                 case 'Scripting and Automation':
                     uniqueLanguages =['Java', 'Swift', 'Kotlin', 'Rust', 'Python', 'Tcl', 'KiCad', 'Modelica', 'AppleScript', 'JavaScript', 'JSON', 'Shell', 'PowerShell', 
                     'Makefile', 'AutoHotkey', 'Raku', 'Uno', 'Jsonnet', 'DIGITAL Command Language', 'Perl', 'Bash', 'Perl 6', 'Dockerfile', 'Thrift', 'VimL', 'Groovy'];
+                    descriptionParagraph.textContent = `Scripting and automation play pivotal roles in streamlining processes and enhancing efficiency across various industries. Scripting involves writing code, often in scripting languages like Python or JavaScript, to automate tasks and execute commands. This enables the automation of repetitive and time-consuming activities, leading to increased productivity and reduced human error.Automation, on the other hand, refers to the use of technology to perform tasks without continuous human intervention. In the context of scripting, automation scripts are created to handle routine operations, such as data processing, system administration, or software deployment. This not only saves time but also allows for scalability and consistency in task execution.The field of scripting and automation is essential in IT, DevOps, and beyond, empowering professionals to focus on strategic and creative aspects of their work while delegating mundane tasks to machines. As industries continue to evolve, scripting and automation skills become increasingly valuable for driving innovation and efficiency`;
                     break;
                 case 'Data Science and Analysis':
                     uniqueLanguages = ['JavaScript', 'HTML', 'CSS', 'Python', 'Modelica','R','MATLAB','SAS','SQLPL','TSQL','Clojure','Go','Jupyter Notebook','SQL','Julia'];
+                    descriptionParagraph.textContent = `Data Science and Analysis is a dynamic field at the intersection of statistics, computer science, and domain-specific knowledge, aimed at extracting meaningful insights from vast datasets. Professionals in this field leverage advanced algorithms, statistical models, and machine learning techniques to analyze and interpret complex data sets, uncovering patterns and trends. The process involves data cleaning, exploration, and visualization to make informed decisions and predictions. With the exponential growth of data in various industries, from healthcare to finance, data scientists play a crucial role in driving innovation and informed decision-making. The field also encompasses data engineering, ensuring the efficient collection and storage of data. As organizations increasingly recognize the value of data-driven strategies, the demand for skilled data scientists continues to rise, making it a pivotal and rapidly evolving field in the modern technological landscape.`;
                     break;
                 case 'General Purpose Programming':
                     uniqueLanguages = ['Java', 'Swift', 'Kotlin', 'Python', 'Standard ML', 'Ceylon', 'Protocol Buffer', 'JSON', 'Gherkin', 'D', 'Delphi', 'Haxe', 'VBA',
@@ -101,10 +107,12 @@
                     'SQF', 'IDL', 'API Blueprint', 'SaltStack', 'ZenScript', 'Eagle', 'Common Lisp', 'Eiffel', 'Haskell', 'QML', 'Pawn', 'Lua', 'Smalltalk', 'Lean', 'Ruby', 
                     'SourcePawn', 'C#', 'C++', 'Elixir', 'Xtend', 'OCaml', 'PHP', 'Jinja', 'Hack', 'Fortran', 'Reason', 'Racket', 'M', 'Logos', 'Nim', 'GDScript', 'Scala', 'DM',
                      'AppleScript', 'ooc', 'Tcl']
+                    descriptionParagraph.textContent = `General Purpose Programming is a broad and foundational field within computer science, focusing on creating software applications that can perform a wide range of tasks. It involves writing code that is not limited to specific functions or domains, allowing developers to address diverse challenges. General-purpose programming languages, such as Python, Java, and C++, provide the tools to create applications ranging from web development to system-level programming. This field plays a crucial role in shaping the digital landscape, enabling the development of versatile and scalable solutions. As technology advances, the demand for skilled general-purpose programmers continues to grow, driving innovation in areas like artificial intelligence, data science, and software engineering. Mastery of general-purpose programming empowers developers to adapt to evolving technological landscapes and contribute to the development of robust and efficient software systems.`;
                     break;
                 case 'Markup and Configuration':
                     uniqueLanguages = ['Java', 'Swift', 'Kotlin', 'YAML', 'JSON', 'HTML', 'XML', 'Nginx', 'CodeQL', 'Roff', 'Stylus', 'Nunjucks', 'Mustache', 'Markdown', 
                     'Pan', 'Gettext Catalog', 'Batchfile', 'Rich Text Format', 'TeX', 'CWeb', 'Protocol Buffer'];
+                    descriptionParagraph.textContent = `Markup and configuration are crucial aspects in the realm of computing and software development. Markup languages, like HTML and XML, play a fundamental role in structuring and presenting information on the web. They provide a standardized way to define document elements, facilitating seamless data interchange.On the other hand, configuration management involves the process of handling and organizing settings and parameters in software systems. This ensures consistency, reliability, and scalability across various environments. Tools like Ansible, Puppet, and Chef automate configuration tasks, enabling efficient deployment and maintenance of complex systems.Together, markup and configuration contribute to the foundation of modern IT infrastructure and software development, promoting standardization, collaboration, and agility. As technology continues to evolve, the role of markup and configuration becomes increasingly pivotal in shaping robust, scalable, and maintainable digital ecosystems.`;
                     break;
                 case 'Miscellaneous and Specialized':
                     uniqueLanguages =['Java', 'Swift', 'Kotlin', 'Python', 'Vim Snippet', 'PLpgSQL', 'YARA', 'Stata', 'Emacs Lisp', 'Fortran', 'Mako', 'Mathematica', 
@@ -113,8 +121,8 @@
                     'XQuery', 'OpenSCAD', 'SystemVerilog', 'Inform 7', 'Web Ontology Language (OWL)', 'Prolog', 'BlitzBasic', 'AutoIt', 'LiveScript', 'AGS Script', 'Lasso', 
                     'Perl6', 'M4', 'Factor', 'Awk', 'Starlark', 'xBase', 'POV-Ray SDL', 'mIRC Script', 'Erlang', 'GAP', 'Max', 'ABAP', 'HCL', 'Objective-J', '1C Enterprise', 
                     'Forth', 'Slash', 'KiCad', 'Standard ML', 'Apex', 'LLVM'];
+                    descriptionParagraph.textContent = `The field of Miscellaneous and Specialized refers to diverse and unique areas that do not fall neatly into conventional categories. This broad domain encompasses a myriad of specialized disciplines, often characterized by their distinctiveness and specific focus. Examples include niche branches of science, unconventional forms of art, and specialized technical fields that cater to specific industries. Professionals in these areas often possess expertise that sets them apart, addressing niche demands and pushing the boundaries of traditional knowledge. The Miscellaneous and Specialized field fosters innovation, encouraging exploration beyond mainstream disciplines. As society evolves, the importance of these specialized domains becomes increasingly evident, contributing to advancements in technology, culture, and knowledge, enriching the overall tapestry of human achievement.`;
                     break;
-                
                 default:
                     uniqueLanguages = ['Default Language'];
             }
@@ -130,38 +138,5 @@
         window.onload = loadData;
     </script>
     
-    <script>
-        // Function to update the category description dynamically
-        function updateCategoryDescription(category) {
-            const descriptionParagraph = document.getElementById('category-description');
-            if (category=='Web Development'){
-            descriptionParagraph.textContent = 'Web development is a dynamic and rapidly evolving field that encompasses the creation and maintenance of websites and web applications. It involves a diverse set of skills, including programming languages like HTML, CSS, and JavaScript, as well as familiarity with frameworks, libraries, and content management systems. Web developers play a crucial role in shaping the online experience, focusing on both the functionality and user interface of websites. The field is divided into front-end development, dealing with the client-side interface, and back-end development, handling server-side logic and databases. With the advent of responsive design and mobile technology, web developers need to ensure websites are accessible across various devices. Continuous learning is essential in this field, given the constant evolution of technologies and industry trends. The demand for skilled web developers remains high as businesses and individuals seek an effective and engaging online presence.';
-            } else if (category=='Mobile App Development'){ 
-            descriptionParagraph.textContent ='Mobile app development is a dynamic and rapidly evolving field focused on creating applications for handheld devices like smartphones and tablets. It encompasses a wide range of technologies, platforms, and programming languages, such as iOS (Swift), Android (Java/Kotlin), and cross-platform frameworks like React Native and Flutter. Developers design apps for diverse purposes, from gaming and social media to productivity and health. The industry thrives on innovation, with constant updates and new features driven by user demands and emerging technologies. Mobile app developers face challenges related to compatibility, security, and user experience, demanding a blend of technical expertise and creativity. As the demand for mobile apps continues to soar, the field offers ample opportunities for developers to contribute to the digital landscape and stay at the forefront of technological advancements.';
-            } else if (category=='Systems Programming'){ 
-                descriptionParagraph.textContent = `Systems programming is a specialized area of software development focused on creating and maintaining the fundamental software that enables computer hardware to function. It involves crafting low-level programs that interact with the hardware, managing system resources, and optimizing performance. Systems programmers work with operating systems, device drivers, and firmware, ensuring efficient communication between software and hardware components. Proficiency in languages like C and assembly is essential, as systems programming demands a deep understanding of computer architecture. This field is critical for developing robust, reliable, and high-performance software infrastructure. Systems programmers play a vital role in designing the backbone of computing systems, contributing to the stability and functionality of everything from embedded systems to large-scale server environments.`;
-            } else if (category=='Scripting and Automation'){ 
-                descriptionParagraph.textContent = `Scripting and automation play pivotal roles in streamlining processes and enhancing efficiency across various industries. Scripting involves writing code, often in scripting languages like Python or JavaScript, to automate tasks and execute commands. This enables the automation of repetitive and time-consuming activities, leading to increased productivity and reduced human error.Automation, on the other hand, refers to the use of technology to perform tasks without continuous human intervention. In the context of scripting, automation scripts are created to handle routine operations, such as data processing, system administration, or software deployment. This not only saves time but also allows for scalability and consistency in task execution.The field of scripting and automation is essential in IT, DevOps, and beyond, empowering professionals to focus on strategic and creative aspects of their work while delegating mundane tasks to machines. As industries continue to evolve, scripting and automation skills become increasingly valuable for driving innovation and efficiency`;
-            } else if (category=='Data Science and Analysis'){ 
-                descriptionParagraph.textContent = `Data Science and Analysis is a dynamic field at the intersection of statistics, computer science, and domain-specific knowledge, aimed at extracting meaningful insights from vast datasets. Professionals in this field leverage advanced algorithms, statistical models, and machine learning techniques to analyze and interpret complex data sets, uncovering patterns and trends. The process involves data cleaning, exploration, and visualization to make informed decisions and predictions. With the exponential growth of data in various industries, from healthcare to finance, data scientists play a crucial role in driving innovation and informed decision-making. The field also encompasses data engineering, ensuring the efficient collection and storage of data. As organizations increasingly recognize the value of data-driven strategies, the demand for skilled data scientists continues to rise, making it a pivotal and rapidly evolving field in the modern technological landscape.`;
-            } else if (category=='General Purpose Programming'){ 
-                descriptionParagraph.textContent = `General Purpose Programming is a broad and foundational field within computer science, focusing on creating software applications that can perform a wide range of tasks. It involves writing code that is not limited to specific functions or domains, allowing developers to address diverse challenges. General-purpose programming languages, such as Python, Java, and C++, provide the tools to create applications ranging from web development to system-level programming. This field plays a crucial role in shaping the digital landscape, enabling the development of versatile and scalable solutions. As technology advances, the demand for skilled general-purpose programmers continues to grow, driving innovation in areas like artificial intelligence, data science, and software engineering. Mastery of general-purpose programming empowers developers to adapt to evolving technological landscapes and contribute to the development of robust and efficient software systems.`;
-            } else if (category=='Markup and Configuration'){ 
-                descriptionParagraph.textContent = `Markup and configuration are crucial aspects in the realm of computing and software development. Markup languages, like HTML and XML, play a fundamental role in structuring and presenting information on the web. They provide a standardized way to define document elements, facilitating seamless data interchange.On the other hand, configuration management involves the process of handling and organizing settings and parameters in software systems. This ensures consistency, reliability, and scalability across various environments. Tools like Ansible, Puppet, and Chef automate configuration tasks, enabling efficient deployment and maintenance of complex systems.Together, markup and configuration contribute to the foundation of modern IT infrastructure and software development, promoting standardization, collaboration, and agility. As technology continues to evolve, the role of markup and configuration becomes increasingly pivotal in shaping robust, scalable, and maintainable digital ecosystems.`;
-            } else if (category=='Miscellaneous and Specialized'){ 
-                descriptionParagraph.textContent = `The field of Miscellaneous and Specialized refers to diverse and unique areas that do not fall neatly into conventional categories. This broad domain encompasses a myriad of specialized disciplines, often characterized by their distinctiveness and specific focus. Examples include niche branches of science, unconventional forms of art, and specialized technical fields that cater to specific industries. Professionals in these areas often possess expertise that sets them apart, addressing niche demands and pushing the boundaries of traditional knowledge. The Miscellaneous and Specialized field fosters innovation, encouraging exploration beyond mainstream disciplines. As society evolves, the importance of these specialized domains becomes increasingly evident, contributing to advancements in technology, culture, and knowledge, enriching the overall tapestry of human achievement.`;
-            }
-            // Additional logic or function calls based on the selected category can be added here
-        }
-
-        async function loadData() {
-            // ... (existing code) ...
-
-            // Call the updateCategoryDescription function with the initial category value
-            updateCategoryDescription('<%= category %>');
-        }
-
-        window.onload = loadData;
-    </script>
 </body>
 </html>
