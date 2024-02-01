@@ -32,6 +32,7 @@ h2 {
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 20px; /* Space between header and content */
+    border: none;
 }
 
 .col-md-3 {
