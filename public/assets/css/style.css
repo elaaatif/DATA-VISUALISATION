@@ -106,3 +106,24 @@ button:hover {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+#cdp {
+    /*border: 1px solid #ffffff; /* Add a border for better visibility */
+    padding-left: 100px; /* Add some padding for spacing inside the div */
+    padding-right: 100px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+
+}
+
+#category-description {
+    font-family: Arial, sans-serif; /* Specify the font family */
+    font-size: 16px; /* Set the font size */
+    color: #6e6e6e; /* Set the text color */
+    line-height: 1.5; /* Set the line height for better readability */
+}
+hr {
+
+    height: 10px;
+    border: none;
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(transparent), to(transparent), color-stop(50%, black));
+}
