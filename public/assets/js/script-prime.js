@@ -57,8 +57,8 @@ function updateChart() {
             createBarChart(filteredData, showAllQuarters);
         } else if (visualizationType === "pie") {
             createPieChart(filteredData, showAllQuarters);
-        } else if (visualizationType === "treemap") {
-            createTreemap(filteredData, showAllQuarters);
+        } else if (visualizationType === "labellinglines") {
+            createLineChartWithLabelsForAllLanguages(filteredData);
         }
         // Add more conditions for other visualization types if needed
     }
@@ -83,11 +83,11 @@ function createComparisonChart(language, visualizationType, showAllQuarters) {
         createBarChart(filteredData, showAllQuarters);
     } else if (visualizationType === "pie") {
         createPieChart(filteredData, showAllQuarters);
-    } else if (visualizationType === "treemap") {
-        createTreemap(filteredData, showAllQuarters);
+    } else if (visualizationType === "labellinglines") {
+        createLineChartWithLabelsForAllLanguages(filteredData);
+    }
     }
     // Add more conditions for other visualization types if needed
-}
 
 // Function to create a line chart
 function createLineChart(data, showAllQuarters) {
@@ -262,12 +262,14 @@ function createPieChart(data, showAllQuarters) {
 }
 
 //-----------------------------------------------------------------------------------------------------
-// Function to create a treemap with languages across all years
-// Function to create a treemap
-function createTreemap(data) {
-    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
-    const width = 445 - margin.left - margin.right;
-    const height = 445 - margin.top - margin.bottom;
+
+// Function to create a line chart with direct labels
+// Function to create a line chart with direct labels for all languages
+function createLineChartWithLabelsForAllLanguages(data) {
+
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
 
     const svg = d3.select("#chart-container")
         .append("svg")
@@ -276,45 +278,63 @@ function createTreemap(data) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Stratify the data: reformatting for d3.js
-    const root = d3.stratify()
-        .id(function (d) { return d.name; })
-        .parentId(function (d) { return d.parent; })
-        (data);
+    const x = d3.scaleBand().range([0, width]).padding(0.1);
+    const y = d3.scaleLinear().range([height, 0]);
 
-    root.sum(function (d) { return +d.value; });
+    // Get unique languages for x-axis
+    const uniqueLanguages = getUniqueValues(data, 'name');
 
-    // Use d3.treemap to compute the position of each element of the hierarchy
-    d3.treemap()
-        .size([width, height])
-        .padding(4)
-        (root);
+    // Set color scale for different languages
+    const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-    console.log(root.leaves());
+    // Set domains for x and y scales based on data
+    x.domain(data.map(d => `${d.year} Q${d.quarter}`));
+    y.domain([0, d3.max(data, d => d.totalCount)]);
 
-    // Add rectangles
-    svg.selectAll("rect")
-        .data(root.leaves())
-        .enter()
-        .append("rect")
-        .attr('x', function (d) { return d.x0; })
-        .attr('y', function (d) { return d.y0; })
-        .attr('width', function (d) { return d.x1 - d.x0; })
-        .attr('height', function (d) { return d.y1 - d.y0; })
-        .style("stroke", "black")
-        .style("fill", "#69b3a2");
+    // Add the x-axis with rotated labels
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "rotate(-90)")
+        .attr("dy", "0.5em")
+        .attr("dx", "-0.8em")
+        .style("text-anchor", "end");
 
-    // Add text labels
-    svg.selectAll("text")
-        .data(root.leaves())
-        .enter()
-        .append("text")
-        .attr("x", function (d) { return d.x0 + 10; })
-        .attr("y", function (d) { return d.y0 + 20; })
-        .text(function (d) { return d.data.name; })
-        .attr("font-size", "15px")
-        .attr("fill", "white");
+    // Add the y-axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    // Create line function
+    const line = d3.line()
+        .x(d => x(`${d.year} Q${d.quarter}`) + x.bandwidth() / 2) // Adjusted x position
+        .y(d => y(d.totalCount));
+
+    // Append lines for each language
+    uniqueLanguages.forEach(language => {
+        const languageData = data.filter(d => d.name === language);
+
+        // Append line to the chart
+        svg.append("path")
+            .datum(languageData)
+            .attr("fill", "none")
+            .attr("stroke", colorScale(language))
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 2)
+            .attr("d", line);
+
+        // Add direct labels for each line
+        svg.append("text")
+            .attr("x", width - 10) // Adjusted x position for label placement
+            .attr("y", y(languageData[languageData.length - 1].totalCount)) // Use the last data point for label placement
+            .text(language)
+            .attr("text-anchor", "end")
+            .attr("font-size", "12px")
+            .attr("fill", colorScale(language));
+    });
 }
+
 
 //-----------------------------------------------------------------------------------------------------
 // Function to get filtered data based on selected filters
